@@ -26,13 +26,13 @@ func (d *Download) Get() (n int64, err error) {
 	defer file.Close()
 
 	resp, err := http.Get(d.url)
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		return 0, fmt.Errorf("non-OK status code: %s", resp.Status)
 	}
 	if err != nil {
 		return
 	}
-	defer resp.Body.Close()
 
 	n, err = io.Copy(file, resp.Body)
 	if err != nil {
