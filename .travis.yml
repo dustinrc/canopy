@@ -1,13 +1,16 @@
 language: go
 
 go:
+    - 1.1
     - 1.2
     - tip
 
 script:
-    - go test ./...
-    - go test -race ./...
+    - go test -v ./...
+      #- go test -race ./...
 
 matrix:
     allow_failures:
+        - go: 1.1
         - go: tip
+    fast_finish: true
