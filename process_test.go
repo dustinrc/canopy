@@ -2,7 +2,7 @@ package canopy
 
 import (
 	"fmt"
-	"testing"
+	. "launchpad.net/gocheck"
 )
 
 // TODO(dustinrc): tests for Windows
@@ -16,19 +16,16 @@ var newGovernedProcessTests = []struct {
 	{[]string{":../path/to/executable", "arg3"}, ""},
 }
 
-func TestNewGovernedProcess(t *testing.T) {
+func (s *S) TestNewGovernedProcess(c *C) {
 	for _, tt := range newGovernedProcessTests {
 		gp := NewGovernedProcess(tt.args[0], tt.args[1:]...)
-		if gp.alias != tt.expectedAlias {
-			t.Errorf("NewGovernedProcess alias: expected %s, actual %s", tt.expectedAlias, gp.alias)
-		}
+		c.Assert(gp.alias, Equals, tt.expectedAlias)
 	}
 }
 
-func TestGovernedProcessString(t *testing.T) {
+func (s *S) TestGovernedProcessString(c *C) {
 	gp := NewGovernedProcess("my-process:../path/to/executable", "arg1", "arg2", "arg3")
 	expected := "GP[my-process]: ../path/to/executable arg1 arg2 arg3"
-	if actual := fmt.Sprintf("%s", gp); actual != expected {
-		t.Errorf("(*GovernedProcess) String: expected %s, actual %s", expected, actual)
-	}
+	actual := fmt.Sprintf("%s", gp)
+	c.Assert(expected, Equals, actual)
 }

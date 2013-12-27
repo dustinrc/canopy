@@ -1,13 +1,22 @@
-package canopy_test
+package canopy
 
 import (
 	"fmt"
-	"github.com/dustinrc/canopy"
+	. "launchpad.net/gocheck"
+	"testing"
 )
 
+func Test(t *testing.T) {
+	TestingT(t)
+}
+
+type S struct{}
+
+var _ = Suite(&S{})
+
 func ExampleNewGovernedProcess() {
-	gp1 := canopy.NewGovernedProcess("show:ls", "-lA", "-h")
-	gp2 := canopy.NewGovernedProcess("which", "ls")
+	gp1 := NewGovernedProcess("show:ls", "-lA", "-h")
+	gp2 := NewGovernedProcess("which", "ls")
 	fmt.Println(gp1)
 	fmt.Println(gp2)
 }

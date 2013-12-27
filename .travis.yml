@@ -5,6 +5,10 @@ go:
     - 1.2
     - tip
 
+install:
+    - go get launchpad.net/gocheck
+    - go get github.com/dustinrc/canopy
+
 script:
     - go test -v ./...
       #- go test -race ./...
