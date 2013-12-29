@@ -3,6 +3,7 @@ package canopy
 import (
 	"fmt"
 	. "launchpad.net/gocheck"
+	"time"
 )
 
 // TODO(dustinrc): tests for Windows
@@ -21,6 +22,26 @@ func (s *S) TestNewGovernedProcess(c *C) {
 		gp := NewGovernedProcess(tt.args[0], tt.args[1:]...)
 		c.Assert(gp.alias, Equals, tt.expectedAlias)
 	}
+}
+
+func (s *S) TestGovernedProcessStartStop(c *C) {
+	gp := NewGovernedProcess("sleep", "2")
+	_ = gp.Start()
+
+	var stopped bool
+	ch := make(chan bool, 1)
+
+	go func() {
+		_ = gp.Stop()
+		ch <- true
+	}()
+
+	select {
+	case stopped = <-ch:
+	case <-time.After(1 * time.Second):
+	}
+
+	c.Assert(stopped, Equals, true)
 }
 
 func (s *S) TestGovernedProcessString(c *C) {
